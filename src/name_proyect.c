@@ -15,6 +15,8 @@
 #include "biblioteca/list/list.c"
 #include "biblioteca/calc/calc.c"
 #include "biblioteca/interfaces/interfaces.c"
+#include "biblioteca/initializer/initializer.c"
+#include "biblioteca/finds/finds.c"
 
 int main(void) {
 	int resultado;
