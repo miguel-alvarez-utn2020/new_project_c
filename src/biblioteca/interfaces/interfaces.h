@@ -1,0 +1,1 @@
+void utn_loading(int time, char* mensaje);
