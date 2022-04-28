@@ -1,7 +1,7 @@
 /*
  ============================================================================
  Name        : name_proyect.c
- Author      : 
+ Author      :
  Version     :
  Copyright   : Your copyright notice
  Description : Hello World in C, Ansi-style
@@ -17,24 +17,29 @@
 #include "biblioteca/interfaces/interfaces.c"
 #include "biblioteca/initializer/initializer.c"
 #include "biblioteca/finds/finds.c"
+#define ELEMENTOS 5
 
-int main(void) {
-	int resultado;
-	int pares;
-	int mayorImpar;
-	int posi;
-	int numero[5] = {-1,-5,1,19,13};
-	utn_listarInt(numero, 5);
-	utn_sumarIntArr(numero, 5, &resultado);
-	printf("resultado: %d", resultado);
-	utn_cantidadParesArr(numero, 5, &pares);
-	printf("pares:: %d", pares);
-	utn_cantPositivosArr(numero, 5, &posi);
-	printf("positivos: %d", posi);
-	utn_mayorInparArr(numero, 5, &mayorImpar);
-
-	printf("mayor impar: %d", mayorImpar);
-	utn_loading(2, "cargando");
+int main(void)
+{
+	int i, j;
+	char nombre[ELEMENTOS][50] = {"Pedro", "Carlos", "Juan", "Ernesto", "Mario"};
+	char apellido[ELEMENTOS][50] = {"Gomez", "Fernandez", "Paz", "Perez", "Lopez"};
+	char auxiliar[50];
+	for (i = 0; i < ELEMENTOS - 1; i++)
+	{
+		for (j = i + 1; j < ELEMENTOS; j++)
+		{
+			if (strcmp(nombre[i], nombre[j]) > 1)
+			{
+				strcpy(auxiliar, nombre[i]);
+				strcpy(nombre[i], nombre[j]);
+				strcpy(nombre[j], auxiliar);
+				strcpy(auxiliar, apellido[i]);
+				strcpy(apellido[i], apellido[j]);
+				strcpy(apellido[j], auxiliar);
+			}
+		}
+	}
 
 	return EXIT_SUCCESS;
 }

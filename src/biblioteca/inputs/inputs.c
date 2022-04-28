@@ -12,42 +12,48 @@ static int getFloat(float *pResultado);
 static int esFloat(char *cadena);
 static int esDni(char *cadena);
 static int getDni(char *pResultado);
-static int getText(char* pResultado);
+static int getText(char *pResultado);
 static int cargarAuto(int arr[], int size);
-
+static int esChar(char *pRespuesta);
 /**
  * @brief Solisita al usuario cargar un cantidad espesifica de numero enteros en un array
- * 
+ *
  * @param arr Array que contiene los elementos para procesar la tarea
- * @param size Tamaño del array que viene por parametro 
+ * @param size Tamaño del array que viene por parametro
  * \param mensaje Es el mensaje a ser mostrado
  * \param mensajeError Es el mensaje de Error a ser mostrado
  * \param minimo Es el numero maximo a ser aceptado
  * \param maximo Es el minimo minimo a ser aceptado
- * 
+ *
  * @param automatico Permite cambiar la funcion a modo carga automatica, si
  *                   se manda por paramtro false o true. true si queremos la carga automatica
  *                   false para carga manual.
  * @return Retorna 0 si se obtuvo el numero y -1 si no
  */
-int utn_cargarArrInt(int arr[], 
-int size, 
-char* mensaje, 
-char* msjError, 
-int minimo, 
-int maximo, 
-int reintentos, 
-int automatico){
+int utn_cargarArrInt(int arr[],
+                     int size,
+                     char *mensaje,
+                     char *msjError,
+                     int minimo,
+                     int maximo,
+                     int reintentos,
+                     int automatico)
+{
     int retorno = -1;
     int i;
     int aux;
-    if(arr != NULL && size > 0 && mensaje != NULL && msjError != NULL && minimo <= maximo && reintentos >= 0){
+    if (arr != NULL && size > 0 && mensaje != NULL && msjError != NULL && minimo <= maximo && reintentos >= 0)
+    {
 
-        if(automatico){
+        if (automatico)
+        {
             cargarAuto(arr, size);
-        }else{
-            
-            for(i = 0; i < size; i++){
+        }
+        else
+        {
+
+            for (i = 0; i < size; i++)
+            {
                 utn_inputTypeInt(&aux, mensaje, msjError, minimo, maximo, reintentos);
                 arr[i] = aux;
             }
@@ -59,16 +65,19 @@ int automatico){
 
 /**
  * @brief Carga un array automaticamente de 0 a size
- * 
+ *
  * @param arr Array que contiene los elementos para procesar la tarea
  * @param size Tamaño del array que viene por parametro
  * @return Retorna 0 (EXITO) si se obtiene un numero entero y -1 (ERROR) si no
  */
-static int cargarAuto(int arr[], int size){
+static int cargarAuto(int arr[], int size)
+{
     int i;
     int retorno = -1;
-    if(arr != NULL && size > 0){
-        for(i = 0; i < size; i++){
+    if (arr != NULL && size > 0)
+    {
+        for (i = 0; i < size; i++)
+        {
             arr[i] = i;
         }
         retorno = 0;
@@ -85,31 +94,32 @@ static int cargarAuto(int arr[], int size){
  * \param maximo Es el minimo minimo a ser aceptado
  * \return Retorna 0 si se obtuvo el numero y -1 si no
  */
-int utn_inputTypeText(char* pResultado, char* mensaje, char* msjError, int charsMimino, int charsMaximo, int reintentos){
+int utn_inputTypeText(char *pResultado, char *mensaje, char *msjError, int charsMimino, int charsMaximo, int reintentos)
+{
     int retorno = -1;
     char bufferText[charsMaximo];
 
-    if(pResultado != NULL && mensaje != NULL && msjError != NULL && charsMimino <= charsMaximo && reintentos >= 0){
+    if (pResultado != NULL && mensaje != NULL && msjError != NULL && charsMimino <= charsMaximo && reintentos >= 0)
+    {
 
         while (reintentos >= 0)
         {
-            reintentos --;
+            reintentos--;
             printf("%s", mensaje);
-            if(getText(bufferText)==0){
-                if(strlen(bufferText) >= charsMimino && strlen(bufferText)<= charsMaximo ){
+            if (getText(bufferText) == 0)
+            {
+                if (strlen(bufferText) >= charsMimino && strlen(bufferText) <= charsMaximo)
+                {
                     strcpy(pResultado, bufferText);
                     retorno = 0;
                     break;
                 }
             }
             strcpy(pResultado, msjError);
-
         }
-        
     }
     return retorno;
 }
-
 
 /**
  * \brief Solicita un numero DNI al usuario, leuego de verificarlo devuelve el resultado
@@ -120,28 +130,30 @@ int utn_inputTypeText(char* pResultado, char* mensaje, char* msjError, int chars
  * \param maximo Es el minimo minimo a ser aceptado
  * \return Retorna 0 si se obtuvo el numero y -1 si no
  */
-int utn_inputTypeDni(char* pResultado, char* mensaje, char* msjError, int vMinimo, int vMaximo, int reintentos){
+int utn_inputTypeDni(char *pResultado, char *mensaje, char *msjError, int vMinimo, int vMaximo, int reintentos)
+{
 
     char bufferDni[50];
     int retorno = -1;
 
-    if(pResultado != NULL && mensaje != NULL && msjError != NULL && vMinimo <= vMaximo && reintentos >= 0){
+    if (pResultado != NULL && mensaje != NULL && msjError != NULL && vMinimo <= vMaximo && reintentos >= 0)
+    {
 
-        while (reintentos > 0){
-        reintentos--;
-        printf("%s", mensaje);
-        if (getDni(bufferDni) == 0)
+        while (reintentos > 0)
         {
-            if (strlen(bufferDni) >= vMinimo && strlen(bufferDni) <= vMaximo)
+            reintentos--;
+            printf("%s", mensaje);
+            if (getDni(bufferDni) == 0)
             {
-                strcpy(pResultado, bufferDni);
-                retorno = 0;
-                break;
+                if (strlen(bufferDni) >= vMinimo && strlen(bufferDni) <= vMaximo)
+                {
+                    strcpy(pResultado, bufferDni);
+                    retorno = 0;
+                    break;
+                }
             }
+            printf("%s", msjError);
         }
-        printf("%s", msjError);
-    }
-
     }
     return retorno;
 }
@@ -172,6 +184,7 @@ int utn_inputTypeInt(int *pResultado, char *mensaje, char *mensajeError, int min
                 break;
             }
         }
+
         printf("%s", mensajeError);
     }
     return retorno;
@@ -186,28 +199,83 @@ int utn_inputTypeInt(int *pResultado, char *mensaje, char *mensajeError, int min
  * \param maximo Es el minimo minimo a ser aceptado
  * \return Retorna 0 si se obtuvo el numero y -1 si no
  */
-int utn_inputTypeFloat(float* pResultado, char* mensaje, char* msjError, float vMinimo, float vMaximo, int reintentos){
+int utn_inputTypeFloat(float *pResultado, char *mensaje, char *msjError, float vMinimo, float vMaximo, int reintentos)
+{
 
     float bufferFloat;
     int retorno = -1;
 
-    if(pResultado != NULL && mensaje != NULL && msjError != NULL && vMinimo <= vMaximo && reintentos >= 0){
+    if (pResultado != NULL && mensaje != NULL && msjError != NULL && vMinimo <= vMaximo && reintentos >= 0)
+    {
 
-        while (reintentos > 0){
-        reintentos--;
-        printf("%s", mensaje);
-        if (getFloat(&bufferFloat) == 0)
+        while (reintentos > 0)
         {
-            if (bufferFloat >= vMinimo && bufferFloat <= vMaximo)
+            reintentos--;
+            printf("%s", mensaje);
+            if (getFloat(&bufferFloat) == 0)
             {
-                *pResultado = bufferFloat;
+                if (bufferFloat >= vMinimo && bufferFloat <= vMaximo)
+                {
+                    *pResultado = bufferFloat;
+                    retorno = 0;
+                    break;
+                }
+            }
+            printf("%s", msjError);
+        }
+    }
+    return retorno;
+}
+/**
+ * @brief
+ *
+ * @param pResultado
+ * @param mensaje
+ * @param msjError
+ * @param reintentos
+ * @return int
+ */
+int inputTypeChar(char *pResultado, char *mensaje, char *msjError, int reintentos)
+{
+
+    int retorno = -1;
+    char buffer;
+    if (pResultado != NULL && mensaje != NULL && msjError != NULL && reintentos >= 0)
+    {
+
+        while (reintentos > 0)
+        {
+            reintentos--;
+
+            printf(mensaje);
+            fflush(stdin);
+            scanf("%c", &buffer);
+            if (esChar(buffer))
+            {
+                *pResultado = buffer;
                 retorno = 0;
                 break;
             }
+            else
+            {
+                printf(msjError);
+            }
         }
-        printf("%s", msjError);
     }
-
+    return retorno;
+}
+/**
+ * @brief
+ *
+ * @param pRespuesta
+ * @return int
+ */
+static int esChar(char *pRespuesta)
+{
+    int retorno = 0;
+    if (pRespuesta >= 'a' && pRespuesta <= 'z' || pRespuesta >= 'A' && pRespuesta <= 'Z')
+    {
+        retorno = 1;
     }
     return retorno;
 }
@@ -307,11 +375,11 @@ static int esFloat(char *cadena)
 {
     int i = 0;
     int retorno = 0;
-     if (cadena != NULL && strlen(cadena) > 0)
+    if (cadena != NULL && strlen(cadena) > 0)
     {
         while (cadena[i] != '\0')
         {
-            if (cadena[i] >=  '0' && cadena[i] <= '9')
+            if (cadena[i] >= '0' && cadena[i] <= '9')
             {
                 retorno = 1;
                 break;
@@ -353,13 +421,17 @@ static int esDni(char *cadena)
     {
         while (cadena[i] != '\0')
         {
-            if(strlen(cadena) == 10){
-                if(cadena[2] != '.' && cadena[6] != '.'){
+            if (strlen(cadena) == 10)
+            {
+                if (cadena[2] != '.' && cadena[6] != '.')
+                {
                     retorno = 0;
                     break;
                 }
                 retorno = 1;
-            }else{
+            }
+            else
+            {
                 retorno = 0;
                 break;
             }
@@ -373,17 +445,24 @@ static int esDni(char *cadena)
  * \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
  * \return Retorna 0 (EXITO) si se obtiene un numero entero y -1 (ERROR) si no
  */
-static int getText(char* pResultado){
+static int getText(char *pResultado)
+{
 
     int retorno = -1;
     char buffer[1000];
-    if(pResultado != NULL){
-        if(myGets(buffer, sizeof(buffer)) == 0){
+    if (pResultado != NULL)
+    {
+        if (myGets(buffer, sizeof(buffer)) == 0)
+        {
             strcpy(pResultado, buffer);
             retorno = 0;
-        }   
+        }
     }
     return retorno;
 }
-
-
+/**
+ * @brief Get the Int object
+ *
+ * @param pResultado
+ * @return int
+ */
